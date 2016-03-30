@@ -2,7 +2,7 @@
 
 chrome extension translating text in images
 
-server: [API](http://kenzan8000.github.io/image-translation/document/API/)
+server: [API](http://kenzan8000.github.io/image-translation/document/server/)
 
 
 ## Installation
