@@ -121,25 +121,20 @@
      **/
     ImageTranslator.prototype.drawTranslation = function(img) {
         var json = img.json;
-        var textAnnotations = json.textAnnotations;
-
         if (json.application_code != 200) { return; }
-        if (!json.textAnnotations || json.textAnnotations.length == 0) { return; }
         var textAnnotations = json.textAnnotations;
-        var innerHTML = ""
+        if (!textAnnotations || textAnnotations.length == 0) { return; }
 
+        var innerHTML = "";
         for (var i = 0; i < textAnnotations.length; i++) {
             var textAnnotation = textAnnotations[i];
-            if (!textAnnotation.translatedTexts) { continue; }
-            if (textAnnotation.translatedTexts.length == 0) { continue; }
-            //img.innerHTML = img.innerHTML + textAnnotation.translatedTexts[0]+"\n";
-            innerHTML = innerHTML + textAnnotation.translatedTexts[0]+"\n";
+            if (!textAnnotation.translatedText) { continue; }
+            innerHTML = innerHTML + textAnnotation.translatedText+"\n";
         }
 /*
         for (var i = 0; i < textAnnotations.length; i++) {
             var textAnnotation = textAnnotations[i];
-            if (!textAnnotation.translatedTexts) { continue; }
-            if (textAnnotation.translatedTexts.length == 0) { continue; }
+            if (!textAnnotation.translatedText) { continue; }
             if (!textAnnotation.boundingPoly) { continue; }
             if (!textAnnotation.boundingPoly.vertices) { continue; }
 
@@ -149,8 +144,7 @@
 /*
         for (var i = 0; i < textAnnotations.length; i++) {
             var textAnnotation = textAnnotations[i];
-            if (!textAnnotation.translatedTexts) { continue; }
-            if (textAnnotation.translatedTexts.length == 0) { continue; }
+            if (!textAnnotation.translatedText) { continue; }
             if (!textAnnotation.boundingPoly) { continue; }
             if (!textAnnotation.boundingPoly.vertices) { continue; }
 
@@ -167,7 +161,7 @@
      * @param img img tag
      * @param textAnnotation json param to draw text on image
      **/
-    ImageTranslator.prototype.drawText = function(img, textAnnotation) {
+//    ImageTranslator.prototype.drawText = function(img, textAnnotation) {
 /*
         var minX = 9999999999;
         var minY = 9999999999;
@@ -192,7 +186,7 @@
 
         var div = document.createElement("div");
         div.style.cssText = "background: rgba(1.0,1.0,1.0,0.7); color: black; position: absolute; top: "+top+"px; left: "+left+"px; width: "+width+"px; height: "+height+"px;";
-        div.innerHTML = textAnnotation.translatedTexts[0];
+        div.innerHTML = textAnnotation.translatedText;
         document.body.appendChild(div);
 */
 /*
@@ -202,10 +196,10 @@
 
         var div = document.createElement("div");
         div.style.cssText = "background-color: white; color: black; position: absolute; bottom: "+bottom+"px; left: "+left+"px; width: "+width+"px;";
-        div.innerHTML = textAnnotation.translatedTexts[0];
+        div.innerHTML = textAnnotation.translatedText;
         document.body.appendChild(div);
 */
-    }
+//    }
 
 
     /// exports
