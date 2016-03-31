@@ -1,5 +1,7 @@
 require 'faraday'
 require 'json'
+require 'net/http'
+require 'uri'
 
 
 class GoogleClient
@@ -33,11 +35,17 @@ class GoogleClient
     annotations = []
     json['responses'].each do |res|
       next unless res['textAnnotations']
+
+      src_lang = nil
+      res['textAnnotations'].each { |annotation| src_lang = annotation['locale'] if annotation['locale'] }
+      next unless src_lang
+
       res['textAnnotations'].each do |annotation|
+        next if annotation['locale']
         text = annotation['description']
-        src_lang = annotation['locale']
         bounding_poly = annotation['boundingPoly']
-        next unless (text && src_lang && bounding_poly)
+        next unless (text && bounding_poly)
+        annotation['locale'] = src_lang
 
         annotations.push annotation
       end
@@ -48,21 +56,32 @@ class GoogleClient
   end
 
   # translate
-  def translate(text, src_lang, dst_lang)
-    connection = Faraday.new(:url => 'https://www.googleapis.com/language/translate/v2') do |faraday|
-      faraday.request  :url_encoded
-      faraday.response :logger
-      faraday.adapter  Faraday.default_adapter
-    end
+  def translate(texts, src_lang, dst_lang)
+    uri_string = 'https://www.googleapis.com/language/translate/v2?'
+    texts.each { |text| uri_string = "#{uri_string}q=#{URI::encode(text)}&" }
+    uri_string = "#{uri_string}key=#{@server_key}&source=#{src_lang}&target=#{dst_lang}"
 
-    response = connection.get do |request|
-      request.params['key'] = @server_key
-      request.params['q'] = text
-      request.params['source'] = src_lang
-      request.params['target'] = dst_lang
-      request.headers['Content-Type'] = 'application/json'
-    end
-    JSON.parse(response.body)
+    client = HttpClient.new
+    client.get_json(uri_string, {'Content-Type' => 'application/json'})
+
+#    uri_string = 'https://www.googleapis.com/language/translate/v2'
+#    connection = Faraday.new(:url => uri_string) do |faraday|
+#      faraday.request  :url_encoded
+#      faraday.response :logger
+#      faraday.adapter  Faraday.default_adapter
+#    end
+#
+#    response = connection.get do |request|
+#      request.params['key'] = @server_key
+#      #q = []
+#      #texts.each { |text| q.push(text) }
+#      #request.params['q'] = q
+#      request.params['source'] = src_lang
+#      request.params['target'] = dst_lang
+#      request.headers['Content-Type'] = 'application/json'
+#      puts request
+#    end
+#    JSON.parse(response.body)
   end
 
   # parse translate's response
@@ -82,3 +101,41 @@ class GoogleClient
 
 end
 
+
+class HttpClient
+
+  # get json
+  def get_json(location, request_header, limit = 10)
+    raise ArgumentError, 'too many HTTP redirects' if limit == 0
+    uri = URI.parse(location)
+    begin
+      request = Net::HTTP::Get.new(uri)
+      request_header.each{|key, value|
+        request.add_field(key, value)
+      }
+
+      response = Net::HTTP.start(uri.host, uri.port, use_ssl: uri.scheme == 'https') do |http|
+        http.open_timeout = 5
+        http.read_timeout = 10
+        http.request(request)
+      end
+
+      case response
+      when Net::HTTPSuccess
+        json = response.body
+        JSON.parse(json)
+      when Net::HTTPRedirection
+        location = response['location']
+        warn "redirected to #{location}"
+        get_json(location, limit - 1)
+      else
+        puts [uri.to_s, response.value].join(" : ")
+        # handle error
+      end
+    rescue => e
+      puts [uri.to_s, e.class, e].join(" : ")
+      # handle error
+    end
+  end
+
+end

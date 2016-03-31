@@ -35,7 +35,7 @@ class HomeController < ApplicationController
         {
           "locale": "ja",
           "description": "ビューティフル\n",
-          "translatedTexts": ["beautiful", ...],
+          "translatedText": "beautiful",
           "boundingPoly": {
             "vertices": [
               {
@@ -81,14 +81,14 @@ class HomeController < ApplicationController
     render json: response_json and return unless annotations
 
     # translate the text
-    annotations.each do |annotation|
-      text = annotation['description']
-      src_lang = annotation['locale']
-      json = client.translate(text, src_lang, dst_lang)
-      translated_texts = client.parse_translate(json)
-      next unless translated_texts
-      annotation['translatedTexts'] = translated_texts
-    end
+    texts = []
+    annotations.each { |annotation| texts.push annotation['description'] }
+    render json: response_json and return if texts.count == 0
+    src_lang = annotations.first['locale']
+    json = client.translate(texts, src_lang, dst_lang)
+    translated_texts = client.parse_translate(json)
+    render json: response_json and return unless annotations.count == translated_texts.count
+    annotations.each_with_index { |annotation, index| annotation['translatedText'] = translated_texts[index] }
     response_json['textAnnotations'] = annotations
 
     render json: response_json
