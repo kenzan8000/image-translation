@@ -19,7 +19,7 @@
      * @param tab Tab
      **/
     function sendRequest(storage, tab) {
-        var msg = (storage.translatorIsOn == "true") ? "image translator will be on" : "image translator will be off";
+        var msg = (storage.translatorIsOn == "true") ? "image translator will turn on" : "image translator will turn off";
         chrome.tabs.sendRequest(tab.id, {message: msg}, function(response) {
         });
     }
@@ -28,10 +28,15 @@
     /// initialization
 
     chrome.storage.local.get("translatorIsOn", function(storage) {
+        chrome.storage.local.set({"translatorIsOn":"false"}, function() {
+            setIcon(storage);
+        });
+/*
         chrome.tabs.getSelected(null, function(tab){
             setIcon(storage);
-            sendRequest(storage, tab);
+            //sendRequest(storage, tab);
         });
+*/
     });
 
 
@@ -51,5 +56,6 @@
             });
         });
     });
+
 
 })((this || 0).self || global);

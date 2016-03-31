@@ -7,14 +7,14 @@ server: [API](http://kenzan8000.github.io/image-translation/document/server/)
 
 ## Installation
 
-### 1. Enable google APIs
+### 1. Enable Google APIs
 
-[cloud vision api](https://cloud.google.com/vision/)
+[Cloud Vision API](https://cloud.google.com/vision/)
 
-[translate api](https://cloud.google.com/translate/)
+[Translate API](https://cloud.google.com/translate/)
 
 
-### 2. set server keys
+### 2. Set server keys
 
 ```
 # on local

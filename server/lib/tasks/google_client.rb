@@ -48,7 +48,7 @@ class GoogleClient
   end
 
   # translate
-  def translte(text, src_lang, dst_lang)
+  def translate(text, src_lang, dst_lang)
     connection = Faraday.new(:url => 'https://www.googleapis.com/language/translate/v2') do |faraday|
       faraday.request  :url_encoded
       faraday.response :logger

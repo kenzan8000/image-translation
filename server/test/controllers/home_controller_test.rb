@@ -15,14 +15,14 @@ describe HomeController do
     res['application_code'].must_equal 400
   end
 
-  it "#POST /translate - return application_code 200 and empty array with image with no text" do
+  it "#POST /translate - return application_code 200 and empty array with image without text" do
     post :translate, :image => "#{IMAGE_WTIHOUT_TEXT}", :target => 'en'
     res = JSON.parse(response.body)
     res['application_code'].must_equal 200
     (res['textAnnotations'].count == 0).must_equal true
   end
 
-  it "#POST /translate - return application_code 200" do
+  it "#POST /translate - return application_code 200 and translated text” do
     post :translate, :image => "#{IMAGE_WTIH_TEXT}", :target => 'en'
     res = JSON.parse(response.body)
     res['application_code'].must_equal 200

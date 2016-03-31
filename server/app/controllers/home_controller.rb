@@ -84,7 +84,7 @@ class HomeController < ApplicationController
     annotations.each do |annotation|
       text = annotation['description']
       src_lang = annotation['locale']
-      json = client.translte(text, src_lang, dst_lang)
+      json = client.translate(text, src_lang, dst_lang)
       translated_texts = client.parse_translate(json)
       next unless translated_texts
       annotation['translatedTexts'] = translated_texts
