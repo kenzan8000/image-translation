@@ -11,27 +11,27 @@ class HomeController < ApplicationController
   @apiGroup Home
   @api {get} /translate
   @apiName translate
-  @apiDescription get translation from text in an image
+  @apiDescription get translation from texts in images
 
   @apiParam {String} target                     Mandatory output language
-  @apiParam {String} image                      Mandatory source image (base64)
+  @apiParam {String} images                     Mandatory source images (base64)
 
   @apiParamExample {json} Request-Example:
     {
       "target": "en",
-      "image": "/9j/4AAQSkZJRgABAQ..."
+      "images": ["/9j/4AAQSkZJRgABAQ...", ...]
     }
 
   @apiSuccess {Array} textAnnotations translation results
   @apiSuccess {String} locale locale string
-  @apiSuccess {String} description detected text from source image
+  @apiSuccess {String} description detected text from source images
   @apiSuccess {Array} translatedTexts translated texts
   @apiSuccess {Dictionary} boundingPoly polygon area written in source text
   @apiSuccess {Number} application_code 200 when succeed, 400 when fail
 
   @apiSuccessExample {json} Success-Response:
     {
-      "textAnnotations": [
+      "images": [
         {
           "locale": "ja",
           "description": "ビューティフル\n",
@@ -64,32 +64,41 @@ class HomeController < ApplicationController
 =end
   def translate
     # check params
-    need_params = [:target, :image]
+    need_params = [:target, :images]
     need_params.each do |need_param|
       render json: { :application_code => 400, :description => "could not find parameter '#{need_param}'" } and return unless params[need_param]
     end
 
-    image = params[:image]
+    images = params[:images]
     dst_lang = params[:target]
     client = GoogleClient.new(ENV['GOOGLE_SERVER_KEY'])
 
-    # detect text from the image
-    json = client.detect_text("#{image}")
+    # detect texts from the images
+    json = client.detect_text(images)
     render json: { :application_code => 400, :description => 'could not detect text' } and return unless json
-    response_json = { :application_code => 200, :textAnnotations => [] }
-    annotations = client.parse_detect_text(json)
-    render json: response_json and return unless annotations
+    response_json = { :application_code => 200, :images => [] }
+    img_annotations = client.parse_detect_text(json)
+    render json: response_json and return unless img_annotations
 
     # translate the text
-    texts = []
-    annotations.each { |annotation| texts.push annotation['description'] }
-    render json: response_json and return if texts.count == 0
-    src_lang = annotations.first['locale']
-    json = client.translate(texts, src_lang, dst_lang)
-    translated_texts = client.parse_translate(json)
-    render json: response_json and return unless annotations.count == translated_texts.count
-    annotations.each_with_index { |annotation, index| annotation['translatedText'] = translated_texts[index] }
-    response_json['textAnnotations'] = annotations
+    img_texts = []
+    src_langs = []
+    img_annotations.each do |annotations|
+      texts = []
+      annotations.each { |annotation| texts.push annotation['description'] }
+      img_texts.push texts
+      src_langs.push annotations.first['locale']
+    end
+    render json: response_json and return if img_texts.count == 0
+
+    json = client.translate(img_texts, src_langs, dst_lang)
+    img_translated_texts = client.parse_translate(json)
+    render json: response_json and return unless img_annotations.count == img_translated_texts.count
+    img_annotations.each_with_index do |annotations, i|
+      next unless annotations.count == img_translated_texts[i].count
+      annotations.each_with_index { |annotation, j| annotation['translatedText'] = img_translated_texts[i][j] }
+    end
+    response_json[:images] = img_annotations
 
     render json: response_json
   end

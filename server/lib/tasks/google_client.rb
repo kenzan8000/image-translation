@@ -12,14 +12,17 @@ class GoogleClient
   end
 
   # text detection
-  def detect_text(image)
+  def detect_text(images)
     connection = Faraday.new(:url => "https://vision.googleapis.com/v1/images:annotate") do |faraday|
       faraday.request  :url_encoded
       faraday.response :logger
       faraday.adapter  Faraday.default_adapter
     end
 
-    body = "{'requests':[{'image':{'content':'#{image}'},'features':[{'type':'TEXT_DETECTION','maxResults':10}]}]}"
+    body = ''
+    images.each { |image| body = "#{body}{'image':{'content':'#{image}'},'features':[{'type':'TEXT_DETECTION','maxResults':10}]}," }
+    body = "{'requests':[#{body}]}"
+
     response = connection.post do |request|
       request.params['key'] = @server_key
       request.headers['Content-Type'] = 'application/json'
@@ -32,7 +35,7 @@ class GoogleClient
   def parse_detect_text(json)
     return nil unless json['responses']
 
-    annotations = []
+    img_annotations = []
     json['responses'].each do |res|
       next unless res['textAnnotations']
 
@@ -40,6 +43,7 @@ class GoogleClient
       res['textAnnotations'].each { |annotation| src_lang = annotation['locale'] if annotation['locale'] }
       next unless src_lang
 
+      annotations = []
       res['textAnnotations'].each do |annotation|
         next if annotation['locale']
         text = annotation['description']
@@ -49,20 +53,27 @@ class GoogleClient
 
         annotations.push annotation
       end
+
+      img_annotations.push annotations if annotations.count > 0
     end
 
-    return nil if annotations.count == 0
-    annotations
+    return nil if img_annotations.count == 0
+    img_annotations
   end
 
   # translate
-  def translate(texts, src_lang, dst_lang)
-    uri_string = 'https://www.googleapis.com/language/translate/v2?'
-    texts.each { |text| uri_string = "#{uri_string}q=#{URI::encode(text)}&" }
-    uri_string = "#{uri_string}key=#{@server_key}&source=#{src_lang}&target=#{dst_lang}"
-
+  def translate(img_texts, src_langs, dst_lang)
     client = HttpClient.new
-    client.get_json(uri_string, {'Content-Type' => 'application/json'})
+
+    json = []
+    img_texts.each_with_index do |texts, index|
+      uri_string = 'https://www.googleapis.com/language/translate/v2?'
+      texts.each { |text| uri_string = "#{uri_string}q=#{URI::encode(text)}&" }
+      uri_string = "#{uri_string}key=#{@server_key}&source=#{src_langs[index]}&target=#{dst_lang}"
+
+      json.push client.get_json(uri_string, {'Content-Type' => 'application/json'})
+    end
+    json
 
 #    uri_string = 'https://www.googleapis.com/language/translate/v2'
 #    connection = Faraday.new(:url => uri_string) do |faraday|
@@ -86,17 +97,24 @@ class GoogleClient
 
   # parse translate's response
   def parse_translate(json)
-    return nil unless json['data']
-    return nil unless json['data']['translations']
+    return nil if json.count == 0
 
-    translated_texts = []
-    json['data']['translations'].each do |translation|
-      next unless translation['translatedText']
-      translated_texts.push translation['translatedText']
+    img_translated_texts = []
+
+    json.each do |data|
+      next unless data['data']
+      next unless data['data']['translations']
+
+      translated_texts = []
+      data['data']['translations'].each do |translation|
+        next unless translation['translatedText']
+        translated_texts.push translation['translatedText']
+      end
+
+      img_translated_texts.push translated_texts
     end
 
-    return nil if translated_texts.count == 0
-    translated_texts
+    img_translated_texts
   end
 
 end
