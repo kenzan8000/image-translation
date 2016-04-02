@@ -37,21 +37,37 @@ class GoogleClient
 
     img_annotations = []
     json['responses'].each do |res|
-      next unless res['textAnnotations']
+      text_annotations = res['textAnnotations']
+      next unless text_annotations
 
       src_lang = nil
-      res['textAnnotations'].each { |annotation| src_lang = annotation['locale'] if annotation['locale'] }
-      next unless src_lang
+      descriptions = nil
+      text_annotations.each do |annotation|
+        src_lang = annotation['locale'] if annotation['locale']
+        descriptions = annotation['description'].split(/\n/) if annotation['description']
+        break
+      end
+      next unless src_lang && descriptions
 
       annotations = []
-      res['textAnnotations'].each do |annotation|
-        next if annotation['locale']
-        text = annotation['description']
-        bounding_poly = annotation['boundingPoly']
-        next unless (text && bounding_poly)
-        annotation['locale'] = src_lang
+      start = 0
+      descriptions.each_with_index do |description, i|
+        merging_annotations = []
 
-        annotations.push annotation
+        for j in start..(text_annotations.count-1) do
+          text_annotation = text_annotations[j]
+          next if text_annotation['locale']
+          merging_annotations.push text_annotation
+
+          merged_annotation = merge_annotations(merging_annotations)
+          next unless merged_annotation
+          next unless merged_annotation[:description] == description
+
+          merged_annotation[:locale] = src_lang
+          annotations.push merged_annotation
+          start = j + 1
+          break
+        end
       end
 
       img_annotations.push annotations if annotations.count > 0
@@ -59,6 +75,40 @@ class GoogleClient
 
     return nil if img_annotations.count == 0
     img_annotations
+  end
+
+  # merge annotations
+  def merge_annotations(merging_annotations)
+    return nil unless merging_annotations
+    return nil if merging_annotations.count == 0
+
+    min_x = 999999; min_y = 999999; max_x = 0; max_y = 0
+    merged_annotation = nil
+    description = ''
+
+    merging_annotations.each do |merging_annotation|
+      boundingPoly = merging_annotation['boundingPoly']
+      next unless boundingPoly
+
+      vertices = boundingPoly['vertices']
+      next unless vertices
+
+      next unless merging_annotation['description']
+
+      description = "#{description}#{merging_annotation['description']}"
+      vertices.each do |vertex|
+        min_x = vertex['x'] if vertex['x'] && vertex['x'] < min_x
+        min_y = vertex['y'] if vertex['y'] && vertex['y'] < min_y
+        max_x = vertex['x'] if vertex['x'] && vertex['x'] > max_x
+        max_y = vertex['y'] if vertex['y'] && vertex['y'] > max_y
+      end
+    end
+
+    merged_annotation = {
+      'boundingPoly':{'vertices':[{'x':min_x, 'y':min_y}, {'x':max_x, 'y':max_y}]},
+      'description':"#{description}"
+    }
+    merged_annotation
   end
 
   # translate

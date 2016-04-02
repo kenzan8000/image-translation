@@ -85,18 +85,19 @@ class HomeController < ApplicationController
     src_langs = []
     img_annotations.each do |annotations|
       texts = []
-      annotations.each { |annotation| texts.push annotation['description'] }
+      annotations.each { |annotation| texts.push annotation[:description] }
       img_texts.push texts
-      src_langs.push annotations.first['locale']
+      src_langs.push annotations.first[:locale]
     end
     render json: response_json and return if img_texts.count == 0
 
     json = client.translate(img_texts, src_langs, dst_lang)
     img_translated_texts = client.parse_translate(json)
     render json: response_json and return unless img_annotations.count == img_translated_texts.count
+
     img_annotations.each_with_index do |annotations, i|
       next unless annotations.count == img_translated_texts[i].count
-      annotations.each_with_index { |annotation, j| annotation['translatedText'] = img_translated_texts[i][j] }
+      annotations.each_with_index { |annotation, j| annotation[:translatedText] = img_translated_texts[i][j] }
     end
     response_json[:images] = img_annotations
 
