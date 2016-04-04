@@ -1,0 +1,10 @@
+{
+    "name": "image translator",
+    "description": "chrome extension translating text in images",
+    "version": "0.0.1",
+    "url": "https://github.com/kenzan8000/image-translation",
+    "options": {
+        "paths": "chrome/js/*",
+        "outdir": "document/chrome"
+    }
+}

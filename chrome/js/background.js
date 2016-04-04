@@ -6,6 +6,7 @@
 
     /**
      * set browser icon
+     *
      * @param storage local storage
      **/
     function setIcon(storage) {
@@ -15,6 +16,7 @@
 
     /**
      * send tab request
+     *
      * @param storage local storage
      * @param tab Tab
      **/
@@ -44,6 +46,7 @@
 
     /**
      * called when switching browser icon
+     *
      **/
     chrome.browserAction.onClicked.addListener(function() {
         chrome.storage.local.get("translatorIsOn", function(storage) {

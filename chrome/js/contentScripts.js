@@ -6,6 +6,7 @@
 
     /**
      * calld when receiving "sendRequest"
+     *
      **/
     chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 

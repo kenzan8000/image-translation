@@ -1,10 +1,14 @@
 (function(global) {
+    "use strict;"
 
 
     /// ImageTranslator
 
     /**
-     * init
+     * ImageTranslator
+     *
+     * @class ImageTranslator
+     * @constructor
      * @param targetLanguage language to output
      **/
     function ImageTranslator(targetLanguage) {
@@ -17,6 +21,8 @@
 
     /**
      * detect images on HTML
+     *
+     * @method detectImages
      * @return jQuery.Deferred(imgs)
      **/
     ImageTranslator.prototype.detectImages = function() {
@@ -49,6 +55,8 @@
 
     /**
      * image uri to data uri
+     *
+     * @method toDataURI
      * @param index this.imgs' index
      * @return jQuery.Deferred()
      **/
@@ -74,6 +82,8 @@
 
     /**
      * translate texts in images
+     *
+     * @method translateImages
      * @return jQuery.Deferred(imgs)
      **/
     ImageTranslator.prototype.translateImages = function() {
@@ -90,6 +100,8 @@
 
     /**
      * translate text in image
+     *
+     * @method translateImage
      * @param index this.imgs' index
      * @return jQuery.Deferred()
      **/
@@ -117,6 +129,8 @@
 
     /**
      * draw translation on image
+     *
+     * @method drawTranslation
      * @param img img tag
      **/
     ImageTranslator.prototype.drawTranslation = function(img) {
@@ -155,51 +169,6 @@
         figcaption.innerHTML = innerHTML;
         img.parentNode.insertBefore(figcaption, img.nextSibling);
     }
-
-    /**
-     * draw translation on image
-     * @param img img tag
-     * @param textAnnotation json param to draw text on image
-     **/
-//    ImageTranslator.prototype.drawText = function(img, textAnnotation) {
-/*
-        var minX = 9999999999;
-        var minY = 9999999999;
-        var maxX = 0;
-        var maxY = 0;
-        for (var i = 0; i < textAnnotation.boundingPoly.vertices.length; i++) {
-            var vertex = textAnnotation.boundingPoly.vertices[i];
-            if (!vertex.x) { vertex.x = 0; }
-            if (!vertex.y) { vertex.y = 0; }
-
-            if (vertex.x < minX) { minX = vertex.x; }
-            if (vertex.y < minY) { minY = vertex.y; }
-            if (vertex.x > maxX) { maxX = vertex.x; }
-            if (vertex.y > maxY) { maxY = vertex.y; }
-        }
-        //var top = minY;
-        //var left = minX;
-        var top = minY + parseInt(img.offsetTop);
-        var left = minX + parseInt(img.offsetLeft);
-        var width = maxX - minX;
-        var height = maxY - minY;
-
-        var div = document.createElement("div");
-        div.style.cssText = "background: rgba(1.0,1.0,1.0,0.7); color: black; position: absolute; top: "+top+"px; left: "+left+"px; width: "+width+"px; height: "+height+"px;";
-        div.innerHTML = textAnnotation.translatedText;
-        document.body.appendChild(div);
-*/
-/*
-        var bottom = parseInt(img.offsetTop) + parseInt(img.offsetHeight);
-        var left = parseInt(img.offsetLeft);
-        var width = parseInt(img.offsetWidth);
-
-        var div = document.createElement("div");
-        div.style.cssText = "background-color: white; color: black; position: absolute; bottom: "+bottom+"px; left: "+left+"px; width: "+width+"px;";
-        div.innerHTML = textAnnotation.translatedText;
-        document.body.appendChild(div);
-*/
-//    }
 
 
     /// exports

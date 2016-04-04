@@ -1,0 +1,783 @@
+{
+    "project": {
+        "name": "image translator",
+        "description": "chrome extension translating text in images",
+        "version": "0.0.1",
+        "url": "https://github.com/kenzan8000/image-translation"
+    },
+    "files": {
+        "chrome/js/background.js": {
+            "name": "chrome/js/background.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "chrome/js/contentScripts.js": {
+            "name": "chrome/js/contentScripts.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "chrome/js/imageTranslator.js": {
+            "name": "chrome/js/imageTranslator.js",
+            "modules": {},
+            "classes": {
+                "ImageTranslator": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "document/server/utils/handlebars_helper.js": {
+            "name": "document/server/utils/handlebars_helper.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "document/server/utils/send_sample_request.js": {
+            "name": "document/server/utils/send_sample_request.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "document/server/vendor/path-to-regexp/index.js": {
+            "name": "document/server/vendor/path-to-regexp/index.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "document/server/vendor/lodash.min.js": {
+            "name": "document/server/vendor/lodash.min.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        },
+        "document/server/main.js": {
+            "name": "document/server/main.js",
+            "modules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {},
+    "classes": {
+        "ImageTranslator": {
+            "name": "ImageTranslator",
+            "shortname": "ImageTranslator",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "chrome/js/imageTranslator.js",
+            "line": 7,
+            "description": "ImageTranslator",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "targetLanguage",
+                    "description": "language to output"
+                }
+            ]
+        }
+    },
+    "elements": {},
+    "classitems": [
+        {
+            "file": "chrome/js/background.js",
+            "line": 7,
+            "description": "set browser icon",
+            "params": [
+                {
+                    "name": "storage",
+                    "description": "local storage"
+                }
+            ],
+            "class": "ImageTranslator"
+        },
+        {
+            "file": "chrome/js/background.js",
+            "line": 17,
+            "description": "send tab request",
+            "params": [
+                {
+                    "name": "storage",
+                    "description": "local storage"
+                },
+                {
+                    "name": "tab",
+                    "description": "Tab"
+                }
+            ],
+            "class": "ImageTranslator"
+        },
+        {
+            "file": "chrome/js/background.js",
+            "line": 47,
+            "description": "called when switching browser icon",
+            "class": "ImageTranslator"
+        },
+        {
+            "file": "chrome/js/contentScripts.js",
+            "line": 7,
+            "description": "calld when receiving \"sendRequest\"",
+            "class": "ImageTranslator"
+        },
+        {
+            "file": "chrome/js/imageTranslator.js",
+            "line": 22,
+            "description": "detect images on HTML",
+            "itemtype": "method",
+            "name": "detectImages",
+            "return": {
+                "description": "jQuery.Deferred(imgs)"
+            },
+            "class": "ImageTranslator"
+        },
+        {
+            "file": "chrome/js/imageTranslator.js",
+            "line": 56,
+            "description": "image uri to data uri",
+            "itemtype": "method",
+            "name": "toDataURI",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "this.imgs' index"
+                }
+            ],
+            "return": {
+                "description": "jQuery.Deferred()"
+            },
+            "class": "ImageTranslator"
+        },
+        {
+            "file": "chrome/js/imageTranslator.js",
+            "line": 83,
+            "description": "translate texts in images",
+            "itemtype": "method",
+            "name": "translateImages",
+            "return": {
+                "description": "jQuery.Deferred(imgs)"
+            },
+            "class": "ImageTranslator"
+        },
+        {
+            "file": "chrome/js/imageTranslator.js",
+            "line": 101,
+            "description": "translate text in image",
+            "itemtype": "method",
+            "name": "translateImage",
+            "params": [
+                {
+                    "name": "index",
+                    "description": "this.imgs' index"
+                }
+            ],
+            "return": {
+                "description": "jQuery.Deferred()"
+            },
+            "class": "ImageTranslator"
+        },
+        {
+            "file": "chrome/js/imageTranslator.js",
+            "line": 130,
+            "description": "draw translation on image",
+            "itemtype": "method",
+            "name": "drawTranslation",
+            "params": [
+                {
+                    "name": "img",
+                    "description": "img tag"
+                }
+            ],
+            "class": "ImageTranslator"
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 7,
+            "description": "start/stop timer for simple performance check.",
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 21,
+            "description": "Return localized Text.",
+            "params": [
+                {
+                    "name": "string",
+                    "description": "text"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 29,
+            "description": "Console log.",
+            "params": [
+                {
+                    "name": "mixed",
+                    "description": "obj"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 38,
+            "description": "Replace underscore with space.",
+            "params": [
+                {
+                    "name": "string",
+                    "description": "text"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 46,
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 59,
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 66,
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 81,
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 96,
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 109,
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 116,
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 124,
+            "description": "Convert Newline to HTML-Break (nl2br).",
+            "params": [
+                {
+                    "name": "text",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 134,
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 159,
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 187,
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 194,
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 201,
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 226,
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/handlebars_helper.js",
+            "line": 296,
+            "description": "Overwrite Colors",
+            "class": ""
+        },
+        {
+            "file": "document/server/utils/send_sample_request.js",
+            "line": 151,
+            "description": "Exports.",
+            "class": ""
+        },
+        {
+            "file": "document/server/vendor/path-to-regexp/index.js",
+            "line": 5,
+            "description": "Expose `pathToRegexp`.",
+            "class": ""
+        },
+        {
+            "file": "document/server/vendor/path-to-regexp/index.js",
+            "line": 10,
+            "description": "The main path matching regexp utility.",
+            "type": "{RegExp}",
+            "class": ""
+        },
+        {
+            "file": "document/server/vendor/path-to-regexp/index.js",
+            "line": 29,
+            "description": "Escape the capturing group by escaping special characters and meaning.",
+            "params": [
+                {
+                    "name": "group",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": ""
+        },
+        {
+            "file": "document/server/vendor/path-to-regexp/index.js",
+            "line": 39,
+            "description": "Attach the keys as a property of the regexp.",
+            "params": [
+                {
+                    "name": "re",
+                    "description": "",
+                    "type": "RegExp"
+                },
+                {
+                    "name": "keys",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "RegExp"
+            },
+            "class": ""
+        },
+        {
+            "file": "document/server/vendor/path-to-regexp/index.js",
+            "line": 51,
+            "description": "Get the flags for a regexp from the options.",
+            "params": [
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": ""
+        },
+        {
+            "file": "document/server/vendor/path-to-regexp/index.js",
+            "line": 61,
+            "description": "Pull out keys from a regexp.",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "",
+                    "type": "RegExp"
+                },
+                {
+                    "name": "keys",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "RegExp"
+            },
+            "class": ""
+        },
+        {
+            "file": "document/server/vendor/path-to-regexp/index.js",
+            "line": 86,
+            "description": "Transform an array into a regexp.",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "keys",
+                    "description": "",
+                    "type": "Array"
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "RegExp"
+            },
+            "class": ""
+        },
+        {
+            "file": "document/server/vendor/path-to-regexp/index.js",
+            "line": 105,
+            "description": "Replace the specific tags with regexp strings.",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "",
+                    "type": "String"
+                },
+                {
+                    "name": "keys",
+                    "description": "",
+                    "type": "Array"
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "String"
+            },
+            "class": ""
+        },
+        {
+            "file": "document/server/vendor/path-to-regexp/index.js",
+            "line": 152,
+            "description": "Normalize the given path string, returning a regular expression.\n\nAn empty array can be passed in for the keys, which will hold the\nplaceholder key descriptions. For example, using `/user/:id`, `keys` will\ncontain `[{ name: 'id', delimiter: '/', optional: false, repeat: false }]`.",
+            "params": [
+                {
+                    "name": "path",
+                    "description": "",
+                    "type": "(String|RegExp|Array)"
+                },
+                {
+                    "name": "keys",
+                    "description": "",
+                    "type": "Array",
+                    "optional": true
+                },
+                {
+                    "name": "options",
+                    "description": "",
+                    "type": "Object",
+                    "optional": true
+                }
+            ],
+            "return": {
+                "description": "",
+                "type": "RegExp"
+            },
+            "class": ""
+        },
+        {
+            "file": "document/server/vendor/lodash.min.js",
+            "line": 1,
+            "license": "Lo-Dash 2.4.1 (Custom Build) lodash.com/license | Underscore.js 1.5.2 underscorejs.org/LICENSE\nBuild: `lodash -o ./dist/lodash.compat.js`",
+            "class": ""
+        },
+        {
+            "file": "document/server/main.js",
+            "line": 340,
+            "description": "Check if Parameter (sub) List has a type Field.\nExample: @apiSuccess          varname1 No type.",
+            "apisuccess": "{String} varname2 With type.",
+            "params": [
+                {
+                    "name": "fields",
+                    "description": "",
+                    "type": "Object"
+                }
+            ],
+            "class": ""
+        },
+        {
+            "file": "document/server/main.js",
+            "line": 356,
+            "description": "On Template changes, recall plugins.",
+            "class": ""
+        },
+        {
+            "file": "document/server/main.js",
+            "line": 460,
+            "description": "Change version of an article to compare it to an other version.",
+            "class": ""
+        },
+        {
+            "file": "document/server/main.js",
+            "line": 556,
+            "description": "Compare all currently selected Versions with their predecessor.",
+            "class": ""
+        },
+        {
+            "file": "document/server/main.js",
+            "line": 577,
+            "description": "Add article settings.",
+            "class": ""
+        },
+        {
+            "file": "document/server/main.js",
+            "line": 605,
+            "description": "Render Article.",
+            "class": ""
+        },
+        {
+            "file": "document/server/main.js",
+            "line": 624,
+            "description": "Render original Article and remove the current visible Article.",
+            "class": ""
+        },
+        {
+            "file": "document/server/main.js",
+            "line": 643,
+            "description": "Load google fonts.",
+            "class": ""
+        },
+        {
+            "file": "document/server/main.js",
+            "line": 660,
+            "description": "Return ordered entries by custom order and append not defined entries to the end.",
+            "params": [
+                {
+                    "name": "elements",
+                    "description": "",
+                    "type": "String[]"
+                },
+                {
+                    "name": "order",
+                    "description": "",
+                    "type": "String[]"
+                },
+                {
+                    "name": "splitBy",
+                    "description": "",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "Custom ordered list.",
+                "type": "String[]"
+            },
+            "class": ""
+        }
+    ],
+    "warnings": [
+        {
+            "message": "replacing incorrect tag: returns with return",
+            "line": " document/server/utils/handlebars_helper.js:124"
+        },
+        {
+            "message": "unknown tag: license",
+            "line": " document/server/vendor/lodash.min.js:1"
+        },
+        {
+            "message": "unknown tag: apisuccess",
+            "line": " document/server/main.js:340"
+        },
+        {
+            "message": "Missing item type\nset browser icon",
+            "line": " chrome/js/background.js:7"
+        },
+        {
+            "message": "Missing item type\nsend tab request",
+            "line": " chrome/js/background.js:17"
+        },
+        {
+            "message": "Missing item type\ncalled when switching browser icon",
+            "line": " chrome/js/background.js:47"
+        },
+        {
+            "message": "Missing item type\ncalld when receiving \"sendRequest\"",
+            "line": " chrome/js/contentScripts.js:7"
+        },
+        {
+            "message": "Missing item type\nstart/stop timer for simple performance check.",
+            "line": " document/server/utils/handlebars_helper.js:7"
+        },
+        {
+            "message": "Missing item type\nReturn localized Text.",
+            "line": " document/server/utils/handlebars_helper.js:21"
+        },
+        {
+            "message": "Missing item type\nConsole log.",
+            "line": " document/server/utils/handlebars_helper.js:29"
+        },
+        {
+            "message": "Missing item type\nReplace underscore with space.",
+            "line": " document/server/utils/handlebars_helper.js:38"
+        },
+        {
+            "message": "Missing item type",
+            "line": " document/server/utils/handlebars_helper.js:46"
+        },
+        {
+            "message": "Missing item type",
+            "line": " document/server/utils/handlebars_helper.js:59"
+        },
+        {
+            "message": "Missing item type",
+            "line": " document/server/utils/handlebars_helper.js:66"
+        },
+        {
+            "message": "Missing item type",
+            "line": " document/server/utils/handlebars_helper.js:81"
+        },
+        {
+            "message": "Missing item type",
+            "line": " document/server/utils/handlebars_helper.js:96"
+        },
+        {
+            "message": "Missing item type",
+            "line": " document/server/utils/handlebars_helper.js:109"
+        },
+        {
+            "message": "Missing item type",
+            "line": " document/server/utils/handlebars_helper.js:116"
+        },
+        {
+            "message": "Missing item type\nConvert Newline to HTML-Break (nl2br).",
+            "line": " document/server/utils/handlebars_helper.js:124"
+        },
+        {
+            "message": "Missing item type",
+            "line": " document/server/utils/handlebars_helper.js:134"
+        },
+        {
+            "message": "Missing item type",
+            "line": " document/server/utils/handlebars_helper.js:159"
+        },
+        {
+            "message": "Missing item type",
+            "line": " document/server/utils/handlebars_helper.js:187"
+        },
+        {
+            "message": "Missing item type",
+            "line": " document/server/utils/handlebars_helper.js:194"
+        },
+        {
+            "message": "Missing item type",
+            "line": " document/server/utils/handlebars_helper.js:201"
+        },
+        {
+            "message": "Missing item type",
+            "line": " document/server/utils/handlebars_helper.js:226"
+        },
+        {
+            "message": "Missing item type\nOverwrite Colors",
+            "line": " document/server/utils/handlebars_helper.js:296"
+        },
+        {
+            "message": "Missing item type\nExports.",
+            "line": " document/server/utils/send_sample_request.js:151"
+        },
+        {
+            "message": "Missing item type\nExpose `pathToRegexp`.",
+            "line": " document/server/vendor/path-to-regexp/index.js:5"
+        },
+        {
+            "message": "Missing item type\nThe main path matching regexp utility.",
+            "line": " document/server/vendor/path-to-regexp/index.js:10"
+        },
+        {
+            "message": "Missing item type\nEscape the capturing group by escaping special characters and meaning.",
+            "line": " document/server/vendor/path-to-regexp/index.js:29"
+        },
+        {
+            "message": "Missing item type\nAttach the keys as a property of the regexp.",
+            "line": " document/server/vendor/path-to-regexp/index.js:39"
+        },
+        {
+            "message": "Missing item type\nGet the flags for a regexp from the options.",
+            "line": " document/server/vendor/path-to-regexp/index.js:51"
+        },
+        {
+            "message": "Missing item type\nPull out keys from a regexp.",
+            "line": " document/server/vendor/path-to-regexp/index.js:61"
+        },
+        {
+            "message": "Missing item type\nTransform an array into a regexp.",
+            "line": " document/server/vendor/path-to-regexp/index.js:86"
+        },
+        {
+            "message": "Missing item type\nReplace the specific tags with regexp strings.",
+            "line": " document/server/vendor/path-to-regexp/index.js:105"
+        },
+        {
+            "message": "Missing item type\nNormalize the given path string, returning a regular expression.\n\nAn empty array can be passed in for the keys, which will hold the\nplaceholder key descriptions. For example, using `/user/:id`, `keys` will\ncontain `[{ name: 'id', delimiter: '/', optional: false, repeat: false }]`.",
+            "line": " document/server/vendor/path-to-regexp/index.js:152"
+        },
+        {
+            "message": "Missing item type",
+            "line": " document/server/vendor/lodash.min.js:1"
+        },
+        {
+            "message": "Missing item type\nCheck if Parameter (sub) List has a type Field.\nExample: @apiSuccess          varname1 No type.",
+            "line": " document/server/main.js:340"
+        },
+        {
+            "message": "Missing item type\nOn Template changes, recall plugins.",
+            "line": " document/server/main.js:356"
+        },
+        {
+            "message": "Missing item type\nChange version of an article to compare it to an other version.",
+            "line": " document/server/main.js:460"
+        },
+        {
+            "message": "Missing item type\nCompare all currently selected Versions with their predecessor.",
+            "line": " document/server/main.js:556"
+        },
+        {
+            "message": "Missing item type\nAdd article settings.",
+            "line": " document/server/main.js:577"
+        },
+        {
+            "message": "Missing item type\nRender Article.",
+            "line": " document/server/main.js:605"
+        },
+        {
+            "message": "Missing item type\nRender original Article and remove the current visible Article.",
+            "line": " document/server/main.js:624"
+        },
+        {
+            "message": "Missing item type\nLoad google fonts.",
+            "line": " document/server/main.js:643"
+        },
+        {
+            "message": "Missing item type\nReturn ordered entries by custom order and append not defined entries to the end.",
+            "line": " document/server/main.js:660"
+        }
+    ]
+}

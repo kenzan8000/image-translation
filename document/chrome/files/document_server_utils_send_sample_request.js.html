@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>document/server/utils/send_sample_request.js - image translator</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="icon" href="../assets/favicon.ico">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+                <h1><img src="../assets/css/logo.png" title="image translator" width="117" height="52"></h1>
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.0.1</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+                    <h2 class="off-left">APIs</h2>
+                    <div id="api-tabview" class="tabview">
+                        <ul class="tabs">
+                            <li><a href="#api-classes">Classes</a></li>
+                            <li><a href="#api-modules">Modules</a></li>
+                        </ul>
+                
+                        <div id="api-tabview-filter">
+                            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+                        </div>
+                
+                        <div id="api-tabview-panel">
+                            <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/ImageTranslator.html">ImageTranslator</a></li>
+                            </ul>
+                
+                
+                            <ul id="api-modules" class="apis modules">
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+                    Show:
+                    <label for="api-show-inherited">
+                        <input type="checkbox" id="api-show-inherited" checked>
+                        Inherited
+                    </label>
+            
+                    <label for="api-show-protected">
+                        <input type="checkbox" id="api-show-protected">
+                        Protected
+                    </label>
+            
+                    <label for="api-show-private">
+                        <input type="checkbox" id="api-show-private">
+                        Private
+                    </label>
+                    <label for="api-show-deprecated">
+                        <input type="checkbox" id="api-show-deprecated">
+                        Deprecated
+                    </label>
+            
+                </div>
+            
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+<h1 class="file-heading">File: document/server/utils/send_sample_request.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+define([
+  &#x27;jquery&#x27;
+], function($) {
+
+  var initDynamic = function() {
+      // Button send
+      $(&quot;.sample-request-send&quot;).off(&quot;click&quot;);
+      $(&quot;.sample-request-send&quot;).on(&quot;click&quot;, function(e) {
+          e.preventDefault();
+          var $root = $(this).parents(&quot;article&quot;);
+          var group = $root.data(&quot;group&quot;);
+          var name = $root.data(&quot;name&quot;);
+          var version = $root.data(&quot;version&quot;);
+          sendSampleRequest(group, name, version, $(this).data(&quot;sample-request-type&quot;));
+      });
+
+      // Button clear
+      $(&quot;.sample-request-clear&quot;).off(&quot;click&quot;);
+      $(&quot;.sample-request-clear&quot;).on(&quot;click&quot;, function(e) {
+          e.preventDefault();
+          var $root = $(this).parents(&quot;article&quot;);
+          var group = $root.data(&quot;group&quot;);
+          var name = $root.data(&quot;name&quot;);
+          var version = $root.data(&quot;version&quot;);
+          clearSampleRequest(group, name, version);
+      });
+  }; // initDynamic
+
+  function sendSampleRequest(group, name, version, type)
+  {
+      var $root = $(&#x27;article[data-group=&quot;&#x27; + group + &#x27;&quot;][data-name=&quot;&#x27; + name + &#x27;&quot;][data-version=&quot;&#x27; + version + &#x27;&quot;]&#x27;);
+
+      // Optional header
+      var header = {};
+      $root.find(&quot;.sample-request-header:checked&quot;).each(function(i, element) {
+          var group = $(element).data(&quot;sample-request-header-group-id&quot;);
+          $root.find(&quot;[data-sample-request-header-group=\&quot;&quot; + group + &quot;\&quot;]&quot;).each(function(i, element) {
+            var key = $(element).data(&quot;sample-request-header-name&quot;);
+            var value = element.value;
+            header[key] = $.type(value) === &quot;string&quot; ? escapeHtml(value) : value;
+          });
+      });
+
+      // create JSON dictionary of parameters
+      var param = {};
+      $root.find(&quot;.sample-request-param:checked&quot;).each(function(i, element) {
+          var group = $(element).data(&quot;sample-request-param-group-id&quot;);
+          $root.find(&quot;[data-sample-request-param-group=\&quot;&quot; + group + &quot;\&quot;]&quot;).each(function(i, element) {
+            var key = $(element).data(&quot;sample-request-param-name&quot;);
+            var value = element.value;
+            param[key] = $.type(value) === &quot;string&quot; ? escapeHtml(value) : value;
+          });
+      });
+
+      // grab user-inputted URL
+      var url = $root.find(&quot;.sample-request-url&quot;).val();
+
+      // Insert url parameter
+      var pattern = pathToRegexp(url, null);
+      var matches = pattern.exec(url);
+      for (var i = 1; i &lt; matches.length; i++) {
+          var key = matches[i].substr(1);
+          if (param[key] !== undefined) {
+              url = url.replace(matches[i], encodeURIComponent(param[key]));
+
+              // remove URL parameters from list
+              delete param[key];
+          }
+      } // for
+
+      // send AJAX request, catch success or error callback
+      $.ajax({
+          url: url,
+          dataType: &quot;json&quot;,
+          contentType: &quot;application/json&quot;,
+          data: JSON.stringify(param),
+          headers: header,
+          type: type.toUpperCase(),
+          success: displaySuccess,
+          error: displayError
+      });
+
+      function displaySuccess(data) {
+          var jsonResponse;
+          try {
+              jsonResponse = JSON.stringify(data, null, 4);
+          } catch (e) {
+              jsonResponse = data;
+          }
+          $root.find(&quot;.sample-request-response&quot;).fadeTo(250, 1);
+          $root.find(&quot;.sample-request-response-json&quot;).html(jsonResponse);
+          refreshScrollSpy();
+      };
+
+      function displayError(jqXHR, textStatus, error) {
+          var message = &quot;Error &quot; + jqXHR.status + &quot;: &quot; + error;
+          var jsonResponse;
+          try {
+              jsonResponse = JSON.parse(jqXHR.responseText);
+              jsonResponse = JSON.stringify(jsonResponse, null, 4);
+          } catch (e) {
+              jsonResponse = jqXHR.responseText;
+          }
+
+          if (jsonResponse)
+              message += &quot;&lt;br&gt;&quot; + jsonResponse;
+
+          // flicker on previous error to make clear that there is a new response
+          if($root.find(&quot;.sample-request-response&quot;).is(&quot;:visible&quot;))
+              $root.find(&quot;.sample-request-response&quot;).fadeTo(1, 0.1);
+
+          $root.find(&quot;.sample-request-response&quot;).fadeTo(250, 1);
+          $root.find(&quot;.sample-request-response-json&quot;).html(message);
+          refreshScrollSpy();
+      };
+  }
+
+  function clearSampleRequest(group, name, version)
+  {
+      var $root = $(&#x27;article[data-group=&quot;&#x27; + group + &#x27;&quot;][data-name=&quot;&#x27; + name + &#x27;&quot;][data-version=&quot;&#x27; + version + &#x27;&quot;]&#x27;);
+
+      // hide sample response
+      $root.find(&quot;.sample-request-response-json&quot;).html(&quot;&quot;);
+      $root.find(&quot;.sample-request-response&quot;).hide();
+
+      // reset value of parameters
+      $root.find(&quot;.sample-request-param&quot;).each(function(i, element) {
+          element.value = &quot;&quot;;
+      });
+
+      // restore default URL
+      var $urlElement = $root.find(&quot;.sample-request-url&quot;);
+      $urlElement.val($urlElement.prop(&quot;defaultValue&quot;));
+
+      refreshScrollSpy();
+  }
+
+  function refreshScrollSpy()
+  {
+      $(&#x27;[data-spy=&quot;scroll&quot;]&#x27;).each(function () {
+          $(this).scrollspy(&quot;refresh&quot;);
+      });
+  }
+
+  function escapeHtml(str) {
+      var div = document.createElement(&quot;div&quot;);
+      div.appendChild(document.createTextNode(str));
+      return div.innerHTML;
+  }
+
+  /**
+   * Exports.
+   */
+  return {
+      initDynamic: initDynamic
+  };
+
+});
+
+    </pre>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>
