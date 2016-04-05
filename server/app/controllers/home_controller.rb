@@ -1,4 +1,5 @@
 require './lib/tasks/google_client'
+#require './lib/tasks/image_translator'
 
 
 class HomeController < ApplicationController
@@ -31,8 +32,9 @@ class HomeController < ApplicationController
 
   @apiSuccessExample {json} Success-Response:
     {
-      "images": [
+      "annotations": [
         {
+          "base64": "/9j/4AAQSkZJRgABAQ...",
           "locale": "ja",
           "description": "ビューティフル\n",
           "translatedText": "beautiful",
@@ -79,6 +81,7 @@ class HomeController < ApplicationController
     response_json = { :application_code => 200, :images => [] }
     img_annotations = client.parse_detect_text(json)
     render json: response_json and return unless img_annotations
+    render json: response_json and return unless images.count == img_annotations.count
 
     # translate the text
     img_texts = []
@@ -90,16 +93,16 @@ class HomeController < ApplicationController
       src_langs.push annotations.first[:locale]
     end
     render json: response_json and return if img_texts.count == 0
-
     json = client.translate(img_texts, src_langs, dst_lang)
     img_translated_texts = client.parse_translate(json)
     render json: response_json and return unless img_annotations.count == img_translated_texts.count
 
+    # annotations
     img_annotations.each_with_index do |annotations, i|
       next unless annotations.count == img_translated_texts[i].count
       annotations.each_with_index { |annotation, j| annotation[:translatedText] = img_translated_texts[i][j] }
     end
-    response_json[:images] = img_annotations
+    response_json[:annotations] = img_annotations
 
     render json: response_json
   end
