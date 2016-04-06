@@ -33,12 +33,10 @@
         chrome.storage.local.set({"translatorIsOn":"false"}, function() {
             setIcon(storage);
         });
-/*
         chrome.tabs.getSelected(null, function(tab){
             setIcon(storage);
-            //sendRequest(storage, tab);
+            sendRequest(storage, tab);
         });
-*/
     });
 
 

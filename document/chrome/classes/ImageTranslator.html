@@ -38,6 +38,7 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/Cursor.html">Cursor</a></li>
                                 <li><a href="../classes/ImageTranslator.html">ImageTranslator</a></li>
                             </ul>
                 
@@ -133,7 +134,7 @@
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">targetLanguage</code>
-                        <span class="type">Object</span>
+                        <span class="type">String</span>
 
 
                     <div class="param-description">
@@ -155,6 +156,7 @@
         <li class="api-class-tab index"><a href="#index">Index</a></li>
 
             <li class="api-class-tab methods"><a href="#methods">Methods</a></li>
+            <li class="api-class-tab properties"><a href="#properties">Properties</a></li>
     </ul>
 
     <div>
@@ -167,10 +169,6 @@
                     <ul class="index-list methods">
                             <li class="index-item method">
                                 <a href="#method_detectImages">detectImages</a>
-
-                            </li>
-                            <li class="index-item method">
-                                <a href="#method_drawTranslation">drawTranslation</a>
 
                             </li>
                             <li class="index-item method">
@@ -188,6 +186,24 @@
                     </ul>
                 </div>
 
+                <div class="index-section properties">
+                    <h3>Properties</h3>
+
+                    <ul class="index-list properties">
+                            <li class="index-item property">
+                                <a href="#property_cursor">cursor</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_imgs">imgs</a>
+
+                            </li>
+                            <li class="index-item property">
+                                <a href="#property_targetLanguage">targetLanguage</a>
+
+                            </li>
+                    </ul>
+                </div>
 
 
         </div>
@@ -201,7 +217,7 @@
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type"></span>
+            <span class="type">jQuery.Deferred</span>
         </span>
 
 
@@ -213,7 +229,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/chrome_js_imageTranslator.js.html#l22"><code>chrome&#x2F;js&#x2F;imageTranslator.js:22</code></a>
+        <a href="../files/chrome_js_imageTranslator.js.html#l45"><code>chrome&#x2F;js&#x2F;imageTranslator.js:45</code></a>
         </p>
 
 
@@ -230,64 +246,11 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
+                        <span class="type">jQuery.Deferred</span>:
                     <p>jQuery.Deferred(imgs)</p>
 
             </div>
         </div>
-
-
-</div>
-<div id="method_drawTranslation" class="method item">
-    <h3 class="name"><code>drawTranslation</code></h3>
-
-        <div class="args">
-            <span class="paren">(</span><ul class="args-list inline commas">
-                <li class="arg">
-                        <code>img</code>
-                </li>
-            </ul><span class="paren">)</span>
-        </div>
-
-
-
-
-
-
-
-
-    <div class="meta">
-                <p>
-                Defined in
-        <a href="../files/chrome_js_imageTranslator.js.html#l130"><code>chrome&#x2F;js&#x2F;imageTranslator.js:130</code></a>
-        </p>
-
-
-
-    </div>
-
-    <div class="description">
-        <p>draw translation on image</p>
-
-    </div>
-
-        <div class="params">
-            <h4>Parameters:</h4>
-
-            <ul class="params-list">
-                <li class="param">
-                        <code class="param-name">img</code>
-                        <span class="type">Object</span>
-
-
-                    <div class="param-description">
-                        <p>img tag</p>
-
-                    </div>
-
-                </li>
-            </ul>
-        </div>
-
 
 
 </div>
@@ -303,7 +266,7 @@
         </div>
 
         <span class="returns-inline">
-            <span class="type"></span>
+            <span class="type">jQuery.Deferred</span>
         </span>
 
 
@@ -315,7 +278,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/chrome_js_imageTranslator.js.html#l56"><code>chrome&#x2F;js&#x2F;imageTranslator.js:56</code></a>
+        <a href="../files/chrome_js_imageTranslator.js.html#l79"><code>chrome&#x2F;js&#x2F;imageTranslator.js:79</code></a>
         </p>
 
 
@@ -333,7 +296,7 @@
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">index</code>
-                        <span class="type">Object</span>
+                        <span class="type">Integer</span>
 
 
                     <div class="param-description">
@@ -349,6 +312,7 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
+                        <span class="type">jQuery.Deferred</span>:
                     <p>jQuery.Deferred()</p>
 
             </div>
@@ -368,7 +332,7 @@
         </div>
 
         <span class="returns-inline">
-            <span class="type"></span>
+            <span class="type">jQuery.Deferred</span>
         </span>
 
 
@@ -380,7 +344,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/chrome_js_imageTranslator.js.html#l101"><code>chrome&#x2F;js&#x2F;imageTranslator.js:101</code></a>
+        <a href="../files/chrome_js_imageTranslator.js.html#l124"><code>chrome&#x2F;js&#x2F;imageTranslator.js:124</code></a>
         </p>
 
 
@@ -398,7 +362,7 @@
             <ul class="params-list">
                 <li class="param">
                         <code class="param-name">index</code>
-                        <span class="type">Object</span>
+                        <span class="type">Integer</span>
 
 
                     <div class="param-description">
@@ -414,6 +378,7 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
+                        <span class="type">jQuery.Deferred</span>:
                     <p>jQuery.Deferred()</p>
 
             </div>
@@ -427,7 +392,7 @@
         <span class="paren">()</span>
 
         <span class="returns-inline">
-            <span class="type"></span>
+            <span class="type">jQuery.Deferred</span>
         </span>
 
 
@@ -439,7 +404,7 @@
     <div class="meta">
                 <p>
                 Defined in
-        <a href="../files/chrome_js_imageTranslator.js.html#l83"><code>chrome&#x2F;js&#x2F;imageTranslator.js:83</code></a>
+        <a href="../files/chrome_js_imageTranslator.js.html#l106"><code>chrome&#x2F;js&#x2F;imageTranslator.js:106</code></a>
         </p>
 
 
@@ -456,6 +421,7 @@
             <h4>Returns:</h4>
 
             <div class="returns-description">
+                        <span class="type">jQuery.Deferred</span>:
                     <p>jQuery.Deferred(imgs)</p>
 
             </div>
@@ -465,6 +431,87 @@
 </div>
             </div>
 
+            <div id="properties" class="api-class-tabpanel">
+                <h2 class="off-left">Properties</h2>
+
+<div id="property_cursor" class="property item">
+    <h3 class="name"><code>cursor</code></h3>
+    <span class="type"><a href="../classes/Cursor.html" class="crosslink">Cursor</a></span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/chrome_js_imageTranslator.js.html#l33"><code>chrome&#x2F;js&#x2F;imageTranslator.js:33</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>cursor utility</p>
+
+    </div>
+
+
+
+</div>
+<div id="property_imgs" class="property item">
+    <h3 class="name"><code>imgs</code></h3>
+    <span class="type">Array</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/chrome_js_imageTranslator.js.html#l24"><code>chrome&#x2F;js&#x2F;imageTranslator.js:24</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>img tags</p>
+
+    </div>
+
+        <p><strong>Default:</strong> []</p>
+
+
+</div>
+<div id="property_targetLanguage" class="property item">
+    <h3 class="name"><code>targetLanguage</code></h3>
+    <span class="type">String</span>
+
+
+
+
+
+    <div class="meta">
+                <p>
+                Defined in
+        <a href="../files/chrome_js_imageTranslator.js.html#l15"><code>chrome&#x2F;js&#x2F;imageTranslator.js:15</code></a>
+        </p>
+
+
+    </div>
+
+    <div class="description">
+        <p>language to output</p>
+
+    </div>
+
+        <p><strong>Default:</strong> &#x27;en&#x27;</p>
+
+
+</div>
+            </div>
 
 
     </div>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>chrome/js/contentScripts.js - image translator</title>
+    <title>chrome/js/cursor.js - image translator</title>
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
     <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
     <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
@@ -77,7 +77,7 @@
             <div class="apidocs">
                 <div id="docs-main">
                     <div class="content">
-<h1 class="file-heading">File: chrome/js/contentScripts.js</h1>
+<h1 class="file-heading">File: chrome/js/cursor.js</h1>
 
 <div class="file">
     <pre class="code prettyprint linenums">
@@ -85,31 +85,55 @@
     &quot;use strict;&quot;
 
 
-    /// event listener
+    /// Cursor
 
     /**
-     * calld when receiving &quot;sendRequest&quot;
+     * detecting if cursor is on image, getting cursor position, etc
      *
+     * @class Cursor
+     * @constructor
      **/
-    chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+    function Cursor() {
+        /**
+         * cursor poisition x
+         *
+         * @property x
+         * @type Integer
+         * @default null
+         **/
+        this.x = null;
 
-        // event handling
-        if (request.message == &quot;image translator will turn on&quot;) {
-            var translator = new ImageTranslator(&quot;en&quot;);
-/*
-            translator.detectImages().done(function(imgs) {
-                translator.translateImages(imgs).done(function(imgs) {
-                    for (var i = 0; i &lt; imgs.length; i++) { translator.drawTranslation(imgs[i]); }
-                });
-            });
-*/
-            sendResponse({message: &quot;image translator turned on&quot;});
-        }
-        else if (request.message == &quot;image translator will turn off&quot;) {
-            sendResponse({message: &quot;image translator turn off&quot;});
-        }
+        /**
+         * cursor poisition y
+         *
+         * @property y
+         * @type Integer
+         * @default null
+         **/
+        this.y = null;
 
-    });
+        if (window.captureEvents) { document.captureEvents(Event.MOUSEMOVE); }
+        document.onmousemove = this.onmousemove;
+    };
+
+
+    /// apis
+
+    /**
+     * event lister when mouse moves
+     *
+     * @method onmousemove
+     * @param {Event} event Event
+     **/
+    Cursor.prototype.onmousemove = function(event) {
+        this.x = (window.Event) ? event.pageX : event.clientX + (document.documentElement.scrollLeft ? document.documentElement.scrollLeft : document.body.scrollLeft);
+        this.y = (window.Event) ? event.pageY : event.clientY + (document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop);
+    };
+
+
+    /// exports
+    if (&quot;process&quot; in global) { module.exports = Cursor; }
+    global.Cursor = Cursor;
 
 
 })((this || 0).self || global);

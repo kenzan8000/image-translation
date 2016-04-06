@@ -38,6 +38,7 @@
                 
                         <div id="api-tabview-panel">
                             <ul id="api-classes" class="apis classes">
+                                <li><a href="../classes/Cursor.html">Cursor</a></li>
                                 <li><a href="../classes/ImageTranslator.html">ImageTranslator</a></li>
                             </ul>
                 
@@ -91,11 +92,34 @@
      *
      * @class ImageTranslator
      * @constructor
-     * @param targetLanguage language to output
+     * @param {String} targetLanguage language to output
      **/
     function ImageTranslator(targetLanguage) {
-        this.targetLanguage = targetLanguage;
+        /**
+         * language to output
+         *
+         * @property targetLanguage
+         * @type String
+         * @default &#x27;en&#x27;
+         **/
+        this.targetLanguage = (targetLanguage) ? targetLanguage : &#x27;en&#x27;;
+
+        /**
+         * img tags
+         *
+         * @property imgs
+         * @type Array
+         * @default []
+         **/
         this.imgs = [];
+
+        /**
+         * cursor utility
+         *
+         * @property cursor
+         * @type Cursor
+         **/
+        this.cursor = new Cursor();
     };
 
 
@@ -105,7 +129,7 @@
      * detect images on HTML
      *
      * @method detectImages
-     * @return jQuery.Deferred(imgs)
+     * @return {jQuery.Deferred} jQuery.Deferred(imgs)
      **/
     ImageTranslator.prototype.detectImages = function() {
         var deferred = jQuery.Deferred();
@@ -139,8 +163,8 @@
      * image uri to data uri
      *
      * @method toDataURI
-     * @param index this.imgs&#x27; index
-     * @return jQuery.Deferred()
+     * @param {Integer} index this.imgs&#x27; index
+     * @return {jQuery.Deferred} jQuery.Deferred()
      **/
     ImageTranslator.prototype.toDataURI = function(index) {
         var deferred = jQuery.Deferred();
@@ -166,7 +190,7 @@
      * translate texts in images
      *
      * @method translateImages
-     * @return jQuery.Deferred(imgs)
+     * @return {jQuery.Deferred} jQuery.Deferred(imgs)
      **/
     ImageTranslator.prototype.translateImages = function() {
         var deferred = jQuery.Deferred();
@@ -184,8 +208,8 @@
      * translate text in image
      *
      * @method translateImage
-     * @param index this.imgs&#x27; index
-     * @return jQuery.Deferred()
+     * @param {Integer} index this.imgs&#x27; index
+     * @return {jQuery.Deferred} jQuery.Deferred()
      **/
     ImageTranslator.prototype.translateImage = function(index) {
         var deferred = jQuery.Deferred();
@@ -209,48 +233,29 @@
         return deferred.promise();
     };
 
-    /**
-     * draw translation on image
-     *
-     * @method drawTranslation
-     * @param img img tag
-     **/
-    ImageTranslator.prototype.drawTranslation = function(img) {
-        var json = img.json;
-        if (json.application_code != 200) { return; }
-        var textAnnotations = json.textAnnotations;
-        if (!textAnnotations || textAnnotations.length == 0) { return; }
-
-        var innerHTML = &quot;&quot;;
-        for (var i = 0; i &lt; textAnnotations.length; i++) {
-            var textAnnotation = textAnnotations[i];
-            if (!textAnnotation.translatedText) { continue; }
-            innerHTML = innerHTML + textAnnotation.translatedText+&quot;\n&quot;;
-        }
-/*
-        for (var i = 0; i &lt; textAnnotations.length; i++) {
-            var textAnnotation = textAnnotations[i];
-            if (!textAnnotation.translatedText) { continue; }
-            if (!textAnnotation.boundingPoly) { continue; }
-            if (!textAnnotation.boundingPoly.vertices) { continue; }
-
-            this.drawText(img, textAnnotation);
-        }
-*/
-/*
-        for (var i = 0; i &lt; textAnnotations.length; i++) {
-            var textAnnotation = textAnnotations[i];
-            if (!textAnnotation.translatedText) { continue; }
-            if (!textAnnotation.boundingPoly) { continue; }
-            if (!textAnnotation.boundingPoly.vertices) { continue; }
-
-            this.drawText(img, textAnnotation);
-        }
-*/
-        var figcaption = document.createElement(&quot;figcaption&quot;);
-        figcaption.innerHTML = innerHTML;
-        img.parentNode.insertBefore(figcaption, img.nextSibling);
-    }
+//    /**
+//     * draw translation on image
+//     *
+//     * @method drawTranslation
+//     * @param img img tag
+//     **/
+//    ImageTranslator.prototype.drawTranslation = function(img) {
+//        var json = img.json;
+//        if (json.application_code != 200) { return; }
+//        var textAnnotations = json.textAnnotations;
+//        if (!textAnnotations || textAnnotations.length == 0) { return; }
+//
+//        var innerHTML = &quot;&quot;;
+//        for (var i = 0; i &lt; textAnnotations.length; i++) {
+//            var textAnnotation = textAnnotations[i];
+//            if (!textAnnotation.translatedText) { continue; }
+//            innerHTML = innerHTML + textAnnotation.translatedText+&quot;\n&quot;;
+//        }
+//
+//        var figcaption = document.createElement(&quot;figcaption&quot;);
+//        figcaption.innerHTML = innerHTML;
+//        img.parentNode.insertBefore(figcaption, img.nextSibling);
+//    }
 
 
     /// exports

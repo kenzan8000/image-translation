@@ -29,7 +29,7 @@
     "content_scripts": [
         {
           "matches": ["<all_urls>"],
-          "js": ["js/jquery.js", "js/imageTranslator.js", "js/contentScripts.js"],
+          "js": ["js/jquery.js", "js/jquery.balloon.js", "js/cursor.js", "js/imageTranslator.js", "js/contentScripts.js"],
           "run_at": "document_end"
         }
     ],

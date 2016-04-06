@@ -20,6 +20,15 @@
             "fors": {},
             "namespaces": {}
         },
+        "chrome/js/cursor.js": {
+            "name": "chrome/js/cursor.js",
+            "modules": {},
+            "classes": {
+                "Cursor": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
         "chrome/js/imageTranslator.js": {
             "name": "chrome/js/imageTranslator.js",
             "modules": {},
@@ -67,6 +76,19 @@
     },
     "modules": {},
     "classes": {
+        "Cursor": {
+            "name": "Cursor",
+            "shortname": "Cursor",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "file": "chrome/js/cursor.js",
+            "line": 7,
+            "description": "detecting if cursor is on image, getting cursor position, etc",
+            "is_constructor": 1
+        },
         "ImageTranslator": {
             "name": "ImageTranslator",
             "shortname": "ImageTranslator",
@@ -82,7 +104,8 @@
             "params": [
                 {
                     "name": "targetLanguage",
-                    "description": "language to output"
+                    "description": "language to output",
+                    "type": "String"
                 }
             ]
         }
@@ -99,7 +122,7 @@
                     "description": "local storage"
                 }
             ],
-            "class": "ImageTranslator"
+            "class": "Cursor"
         },
         {
             "file": "chrome/js/background.js",
@@ -115,88 +138,144 @@
                     "description": "Tab"
                 }
             ],
-            "class": "ImageTranslator"
+            "class": "Cursor"
         },
         {
             "file": "chrome/js/background.js",
-            "line": 47,
+            "line": 45,
             "description": "called when switching browser icon",
-            "class": "ImageTranslator"
+            "class": "Cursor"
         },
         {
             "file": "chrome/js/contentScripts.js",
             "line": 7,
             "description": "calld when receiving \"sendRequest\"",
+            "class": "Cursor"
+        },
+        {
+            "file": "chrome/js/cursor.js",
+            "line": 14,
+            "description": "cursor poisition x",
+            "itemtype": "property",
+            "name": "x",
+            "type": "Integer",
+            "default": "null",
+            "class": "Cursor"
+        },
+        {
+            "file": "chrome/js/cursor.js",
+            "line": 23,
+            "description": "cursor poisition y",
+            "itemtype": "property",
+            "name": "y",
+            "type": "Integer",
+            "default": "null",
+            "class": "Cursor"
+        },
+        {
+            "file": "chrome/js/cursor.js",
+            "line": 39,
+            "description": "event lister when mouse moves",
+            "itemtype": "method",
+            "name": "onmousemove",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "Event",
+                    "type": "Event"
+                }
+            ],
+            "class": "Cursor"
+        },
+        {
+            "file": "chrome/js/imageTranslator.js",
+            "line": 15,
+            "description": "language to output",
+            "itemtype": "property",
+            "name": "targetLanguage",
+            "type": "String",
+            "default": "'en'",
             "class": "ImageTranslator"
         },
         {
             "file": "chrome/js/imageTranslator.js",
-            "line": 22,
+            "line": 24,
+            "description": "img tags",
+            "itemtype": "property",
+            "name": "imgs",
+            "type": "Array",
+            "default": "[]",
+            "class": "ImageTranslator"
+        },
+        {
+            "file": "chrome/js/imageTranslator.js",
+            "line": 33,
+            "description": "cursor utility",
+            "itemtype": "property",
+            "name": "cursor",
+            "type": "Cursor",
+            "class": "ImageTranslator"
+        },
+        {
+            "file": "chrome/js/imageTranslator.js",
+            "line": 45,
             "description": "detect images on HTML",
             "itemtype": "method",
             "name": "detectImages",
             "return": {
-                "description": "jQuery.Deferred(imgs)"
+                "description": "jQuery.Deferred(imgs)",
+                "type": "jQuery.Deferred"
             },
             "class": "ImageTranslator"
         },
         {
             "file": "chrome/js/imageTranslator.js",
-            "line": 56,
+            "line": 79,
             "description": "image uri to data uri",
             "itemtype": "method",
             "name": "toDataURI",
             "params": [
                 {
                     "name": "index",
-                    "description": "this.imgs' index"
+                    "description": "this.imgs' index",
+                    "type": "Integer"
                 }
             ],
             "return": {
-                "description": "jQuery.Deferred()"
+                "description": "jQuery.Deferred()",
+                "type": "jQuery.Deferred"
             },
             "class": "ImageTranslator"
         },
         {
             "file": "chrome/js/imageTranslator.js",
-            "line": 83,
+            "line": 106,
             "description": "translate texts in images",
             "itemtype": "method",
             "name": "translateImages",
             "return": {
-                "description": "jQuery.Deferred(imgs)"
+                "description": "jQuery.Deferred(imgs)",
+                "type": "jQuery.Deferred"
             },
             "class": "ImageTranslator"
         },
         {
             "file": "chrome/js/imageTranslator.js",
-            "line": 101,
+            "line": 124,
             "description": "translate text in image",
             "itemtype": "method",
             "name": "translateImage",
             "params": [
                 {
                     "name": "index",
-                    "description": "this.imgs' index"
+                    "description": "this.imgs' index",
+                    "type": "Integer"
                 }
             ],
             "return": {
-                "description": "jQuery.Deferred()"
+                "description": "jQuery.Deferred()",
+                "type": "jQuery.Deferred"
             },
-            "class": "ImageTranslator"
-        },
-        {
-            "file": "chrome/js/imageTranslator.js",
-            "line": 130,
-            "description": "draw translation on image",
-            "itemtype": "method",
-            "name": "drawTranslation",
-            "params": [
-                {
-                    "name": "img",
-                    "description": "img tag"
-                }
-            ],
             "class": "ImageTranslator"
         },
         {
@@ -617,7 +696,7 @@
         },
         {
             "message": "Missing item type\ncalled when switching browser icon",
-            "line": " chrome/js/background.js:47"
+            "line": " chrome/js/background.js:45"
         },
         {
             "message": "Missing item type\ncalld when receiving \"sendRequest\"",

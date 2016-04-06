@@ -32,7 +32,7 @@ class HomeController < ApplicationController
 
   @apiSuccessExample {json} Success-Response:
     {
-      "annotations": [
+      "textAnnotations": [
         {
           "base64": "/9j/4AAQSkZJRgABAQ...",
           "locale": "ja",
@@ -78,7 +78,7 @@ class HomeController < ApplicationController
     # detect texts from the images
     json = client.detect_text(images)
     render json: { :application_code => 400, :description => 'could not detect text' } and return unless json
-    response_json = { :application_code => 200, :images => [] }
+    response_json = { :application_code => 200, :textAnnotations => [] }
     img_annotations = client.parse_detect_text(json)
     render json: response_json and return unless img_annotations
     render json: response_json and return unless images.count == img_annotations.count
@@ -102,7 +102,7 @@ class HomeController < ApplicationController
       next unless annotations.count == img_translated_texts[i].count
       annotations.each_with_index { |annotation, j| annotation[:translatedText] = img_translated_texts[i][j] }
     end
-    response_json[:annotations] = img_annotations
+    response_json[:textAnnotations] = img_annotations
 
     render json: response_json
   end

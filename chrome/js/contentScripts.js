@@ -12,14 +12,12 @@
 
         // event handling
         if (request.message == "image translator will turn on") {
-
             var translator = new ImageTranslator("en");
             translator.detectImages().done(function(imgs) {
                 translator.translateImages(imgs).done(function(imgs) {
-                    for (var i = 0; i < imgs.length; i++) { translator.drawTranslation(imgs[i]); }
+                    translator.setRects();
                 });
             });
-
             sendResponse({message: "image translator turned on"});
         }
         else if (request.message == "image translator will turn off") {
